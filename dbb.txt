@@ -1,0 +1,186 @@
+create database if not exists eduHACKS;
+use eduHACKS;
+
+
+create table if not exists users(
+	iduser int auto_increment,
+    mail varchar(255) unique,
+    username varchar(16) unique,
+    passHash varchar(255),
+    userFirstName varchar(60),
+    userLastName varchar(120),
+    creationDate datetime,
+    removeDate datetime,
+    lastSignIn datetime,
+    active tinyint,
+    
+    primary key (iduser)
+);
+
+CREATE TABLE `ctf` (
+  `idctf` int(11) NOT NULL,
+  `tittle` varchar(120) NOT NULL,
+  `description` varchar(256) NOT NULL,
+  `relaseDate` date NOT NULL DEFAULT current_timestamp(),
+  `points` int(11) NOT NULL,
+  `iduser` int(11) DEFAULT NULL,
+  `fileName` varchar(100) NOT NULL,
+  `filePath` varchar(100) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+CREATE TABLE `hashtags` (
+  `id` int(11) NOT NULL,
+  `name` varchar(40) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+CREATE TABLE `hashtagsctf` (
+  `idHashtag` int(11) DEFAULT NULL,
+  `idctf` int(11) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+
+ALTER TABLE `ctf`
+  ADD PRIMARY KEY (`idctf`),
+  ADD KEY `fk_userCtf` (`iduser`);
+
+ALTER TABLE `hashtags`
+  ADD PRIMARY KEY (`id`);
+
+ALTER TABLE `hashtagsctf`
+  ADD KEY `fk_idHashtag` (`idHashtag`),
+  ADD KEY `fk_idctf` (`idctf`);
+
+ALTER TABLE `ctf`
+  MODIFY `idctf` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=0;CREATE TABLE `ctf` (
+  `idctf` int(11) NOT NULL,
+  `tittle` varchar(120) NOT NULL,
+  `description` varchar(256) NOT NULL,
+  `relaseDate` date NOT NULL DEFAULT current_timestamp(),
+  `points` int(11) NOT NULL,
+  `iduser` int(11) DEFAULT NULL,
+  `fileName` varchar(100) NOT NULL,
+  `filePath` varchar(100) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+
+ALTER TABLE `hashtags`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=0;
+
+ALTER TABLE `ctf`
+  ADD CONSTRAINT `fk_userCtf` FOREIGN KEY (`iduser`) REFERENCES `users` (`iduser`);
+
+ALTER TABLE `hashtagsctf`
+  ADD CONSTRAINT `fk_idHashtag` FOREIGN KEY (`idHashtag`) REFERENCES `hashtags` (`id`),
+  ADD CONSTRAINT `fk_idctf` FOREIGN KEY (`idctf`) REFERENCES `ctf` (`idctf`);
+COMMIT;
+
+CREATE TABLE `hashtagsctf` (
+  `idHashtag` int(11) DEFAULT NULL,
+  `idctf` int(11) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+ALTER TABLE `hashtagsctf`
+  ADD KEY `fk_idHashtag` (`idHashtag`),
+  ADD KEY `fk_idctf` (`idctf`);
+
+ALTER TABLE `hashtagsctf`
+  ADD CONSTRAINT `fk_idHashtag` FOREIGN KEY (`idHashtag`) REFERENCES `hashtags` (`id`),
+  ADD CONSTRAINT `fk_idctf` FOREIGN KEY (`idctf`) REFERENCES `ctf` (`idctf`);
+COMMIT;
+
+use eduhacks;
+select * from ctf;
+select * from hashtagsctf;
+CREATE TABLE `hashtags` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(40) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8mb4;
+
+ALTER TABLE ctf MODIFY `idctf` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=0;
+
+SELECT * FROM ctf;
+
+INSERT INTO ctf (tittle,description,points,iduser,fileName,filePath) VALUES('Primer Test','Descripcion aqui','20','3','jaja','jaja');
+            
+            
+ALTER TABLE users AUTO_INCREMENT = 1;
+
+insert into users (mail, username, passHash, userFirstName, userLastName, active) values ('llorca@gmail.com','nosocunailla','1234','Marc','Llorca','1');
+
+DELETE FROM users WHERE mail = 'guillemorata17@gmail.com';
+
+DELETE FROM users WHERE mail = 'e.melendo@hotmail.com';
+
+select * from users where active != 1;
+
+DELETE FROM users WHERE mail LIKE '%@$';
+
+select * from users where username = 'tontito';
+
+
+ALTER TABLE users ADD points int default 0;
+
+INSERT INTO ctf (`tittle`,`description`,`filePath`,`iduser`,`fileName`,`points`) VALUES('Primer Test','Descripcion aqui','jaja','3','jaja','20');
+
+SELECT activationCode as codi ,mail FROM users where activationCode = '674da6c982b5d3ecbcab2e4f83afcc2a7a0cefc8fc38e2af11b04b4cf4a53ede' and mail = 'guillem.moratallac@educem.net';
+
+	
+
+SELECT * FROM ctf;
+
+INSERT INTO ctf (tittle,description,points,iduser,fileName,filePath) VALUES('Primer Test','Descripcion aqui','20','9','jaja','jaja');
+
+DELETE FROM ctf WHERE idctf = '5';
+SELECT * FROM hashtagsctf;
+ALTER TABLE ctf ADD flag varchar(120) NOT NULL;
+
+
+SELECT passHash,active,iduser,username FROM users WHERE username="edu";
+
+SELECT * FROM  users;
+UPDATE users SET points=0 WHERE iduser = 10;
+
+
+
+
+CREATE TABLE `ctf` (
+  `idctf` int(11) NOT NULL,
+  `tittle` varchar(120) NOT NULL,
+  `description` varchar(256) NOT NULL,
+  `relaseDate` date NOT NULL DEFAULT current_timestamp(),
+  `points` int(11) NOT NULL,
+  `iduser` int(11) DEFAULT NULL,
+  `fileName` varchar(100) NOT NULL,
+  `filePath` varchar(100) NOT NULL,
+  `flag` varchar(100) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+CREATE TABLE `hashtags` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(40) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8mb4;
+
+CREATE TABLE `users` (
+  `iduser` int(11) NOT NULL AUTO_INCREMENT,
+  `mail` varchar(255) DEFAULT NULL,
+  `username` varchar(16) DEFAULT NULL,
+  `passHash` varchar(255) DEFAULT NULL,
+  `userFirstName` varchar(60) DEFAULT NULL,
+  `userLastName` varchar(120) DEFAULT NULL,
+  `creationDate` datetime DEFAULT NULL,
+  `removeDate` datetime DEFAULT NULL,
+  `lastSignIn` datetime DEFAULT NULL,
+  `active` tinyint(4) DEFAULT NULL,
+  `activationDate` datetime DEFAULT NULL,
+  `activationCode` char(64) DEFAULT NULL,
+  `resetPassExpiry` datetime DEFAULT NULL,
+  `resetPassCode` char(64) DEFAULT NULL,
+  `points` int(11) DEFAULT 0,
+  PRIMARY KEY (`iduser`),
+  UNIQUE KEY `mail` (`mail`),
+  UNIQUE KEY `username` (`username`)
+) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=utf8mb4;
+
+
